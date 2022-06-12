@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Navigation from "../Navigation/index";
@@ -9,8 +9,8 @@ export default function Home() {
     setToken(localStorage.getItem("token"));
   }, []);
   return (
-    <Box>
+    <Container>
       <Navigation token={token} />
-    </Box>
+    </Container>
   );
 }
