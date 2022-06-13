@@ -5,16 +5,18 @@ const express = require("express");
 const routes = require("./routes")
 const cors = require("cors");
 require('dotenv').config();
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const PORT = process.env.PORT || 7000;
 
 const app = express();
 
-app.use(cors());
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
 app.use(fileUpload({}));
 app.use(routes)
+app.use(errorMiddleware);
 
 const start = async () => {
     try {

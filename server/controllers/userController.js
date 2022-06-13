@@ -5,25 +5,30 @@ class UserController {
         try {
             const userData = await userService.registration(req, res, next)
 
-            res.cookie("refreshToken", userData.refreshToken, {maxAge: 21 * 24 * 60 * 1000, httpOnly: true, secure: true})
-            
+            res.cookie("refreshToken", userData.refreshToken, {maxAge: 21 * 24 * 60 * 1000, httpOnly: true}) // read more about secure
             return res.json(userData);
         } catch (e) {
-            return res.status(400).json({message: e.message})
+            next(e);
         }
     }
     
     async login(req, res, next) {
         try {
-            
+            const {email, password} = req.body;
+            const userData = await userService.login(email, password);
+            res.cookie("refreshToken", userData.refreshToken, {maxAge: 21 * 24 * 60 * 1000, httpOnly: true}) // read more about secure
+            return res.json(userData);
         } catch (e) {
-            
+            next(e);
         }
     }
     
     async logout(req, res, next) {
         try {
-            
+            const {refreshToken} = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie("refreshToken");
+            return res.status(200).json({message: "Token successfully deleted:", token});
         } catch (e) {
             
         }
@@ -35,13 +40,16 @@ class UserController {
             await userService.verification(verificationLink);
             return res.redirect(process.env.CLIENT_URL); // redirect user back to the app
         } catch (e) {
-            return res.status(400).json({message: e.message})
+            next(e);
         }
     }
 
     async refreshToken(req, res, next) {
         try {
-
+            const {refreshToken} = req.cookies;
+            const userData = await userService.refresh(refreshToken);
+            res.cookie("refreshToken", userData.refreshToken, {maxAge: 21 * 24 * 60 * 1000, httpOnly: true}) // read more about secure
+            return res.json(userData);
         } catch (e) {
 
         }
@@ -49,7 +57,8 @@ class UserController {
 
     async getUsers(req, res, next) {
         try {
-            res.json("SOME DATA")
+            const users = await userService.getUsers();
+            return res.json(users);
         } catch (e) {
 
         }
