@@ -9,31 +9,33 @@ class UserController {
             
             return res.json(userData);
         } catch (e) {
-            console.log(e);
+            return res.status(400).json({message: e.message})
         }
     }
-
+    
     async login(req, res, next) {
         try {
-
+            
         } catch (e) {
-
+            
         }
     }
-
+    
     async logout(req, res, next) {
         try {
-
+            
         } catch (e) {
-
+            
         }
     }
-
-    async activate(req, res, next) {
+    
+    async verification(req, res, next) {
         try {
-
+            const verificationLink = req.params.link;
+            await userService.verification(verificationLink);
+            return res.redirect(process.env.CLIENT_URL); // redirect user back to the app
         } catch (e) {
-
+            return res.status(400).json({message: e.message})
         }
     }
 

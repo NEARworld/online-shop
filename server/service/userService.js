@@ -30,16 +30,23 @@ class UserService {
 
         const userRole =  await Role.findOne({value: isAdmin === "true" ? "ADMIN" : "USER"}) 
 
-        console.log(userRole)
-
         const user = await User.create({email, password: hashedPassword, firstName, lastName, verificationLink, roles: [userRole.value]});
-        await mailService.sendVerificationLink(email, verificationLink);
+        await mailService.sendVerificationLink(email,`${process.env.API_URL}/api/user/verification/${verificationLink}`);
 
         const userDto = new UserDto(user); // {id, email, roles, isActivated} = payload
         const tokens = tokenService.generateTokens({...userDto}) // payload object
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
         return { ...tokens, user: userDto}
+    }
+
+    async verification(verificationLink) {
+        const user = await User.findOne({verificationLink})
+        if(!user) {
+            throw new Error("Verification link is not correct")
+        }
+        user.isVerified = true;
+        await user.save();
     }
 }
 

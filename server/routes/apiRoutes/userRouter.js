@@ -8,7 +8,7 @@ userRouter.post("/registration", [
 ], userController.registration);
 userRouter.post("/login", userController.login);
 userRouter.post("/logout", userController.logout);
-userRouter.get("/activate/:link", userController.activate);
+userRouter.get("/verification/:link", userController.verification);
 userRouter.get("/refresh", userController.refreshToken);
 userRouter.get("/users", userController.getUsers);
 
