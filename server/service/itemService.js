@@ -19,7 +19,7 @@ class ItemService {
 
         const createdItem = await Item.create({name, imgUrl, description, quantity, price, type: typeExists})
 
-        await Type.findOneAndUpdate({title: type, items: [createdItem]}) // this line is wrong a litlt bit
+        await Type.findOneAndUpdate({title: type}, { $push: {items: createdItem}}) // this line is wrong a litlt bit
 
         return createdItem
     }
