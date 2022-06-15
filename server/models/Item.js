@@ -12,7 +12,7 @@ const Item = new Schema({
     type: {type: Schema.Types.ObjectId, ref: "Type"},
     comments: [{type: Schema.Types.ObjectId, ref: "Comment"}],
     created: {type: Date, default: Date.now},
-    updated: {type: Date, default: Date.now}
+    updated: {type: Date}
 })
 
 module.exports = model("Item", Item);
