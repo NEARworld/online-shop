@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <Container className="homepage">
       <Navigation token={token} />
-      <Box sx={{ height: "100vh" }}>
+      <Box>
         <Box sx={{ height: "20px" }}></Box>
         <Carousel />
         <Slider />
