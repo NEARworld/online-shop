@@ -8,6 +8,17 @@ import "../../../styles/core/slider.css";
 import { Typography } from "@mui/material";
 
 const Slider = () => {
+  const images = [
+    "https://source.unsplash.com/random/200x300?nature,water",
+    "https://source.unsplash.com/random/200x300?nature,tree",
+    "https://source.unsplash.com/random/200x300?nature,flower",
+    "https://source.unsplash.com/random/200x300?nature,zoo",
+    "https://source.unsplash.com/random/200x300?nature,animal",
+    "https://source.unsplash.com/random/200x300?nature,plant",
+    "https://source.unsplash.com/random/200x300?nature,mountain",
+    "https://source.unsplash.com/random/200x300?nature,cloud",
+  ];
+
   return (
     <>
       <Typography variant="h6" component="h1">
@@ -26,9 +37,9 @@ const Slider = () => {
         modules={[Autoplay]}
         className="mySwiper"
       >
-        {Array.from({ length: 10 }).map((item, index) => (
+        {images.map((item, index) => (
           <SwiperSlide>
-            <img src="https://picsum.photos/200/300" alt="slide" />
+            <img src={item} alt="slide" />
           </SwiperSlide>
         ))}
       </Swiper>

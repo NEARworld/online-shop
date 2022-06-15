@@ -9,18 +9,22 @@ export default function Example(props) {
     {
       name: "Random Name #1",
       description: "Probably the most random thing you have ever seen!",
+      image: "https://source.unsplash.com/random/800x300?nature,water",
     },
     {
       name: "Random Name #2",
       description: "Hello World!",
+      image: "https://source.unsplash.com/random/800x300?nature,tree",
     },
     {
       name: "Random Name #2",
       description: "Hello World!",
+      image: "https://source.unsplash.com/random/800x300?nature,flower",
     },
     {
       name: "Random Name #2",
       description: "Hello World!",
+      image: "https://source.unsplash.com/random/800x300?nature,plant",
     },
   ];
 
@@ -39,7 +43,7 @@ function Item(props) {
       <Card>
         <CardMedia
           component="img"
-          image="https://source.unsplash.com/random/800x300"
+          image={props.item.image}
           sx={{
             width: "100%",
           }}
