@@ -3,7 +3,8 @@ const commentService = require("../service/commentService");
 class ItemController {
     async create(req, res) {
         try {
-            return res.status(200).json({message: "Item created", createdItem})
+            const comment = await commentService.create(req, res);
+            return res.status(200).json({message: "Item created", comment})
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
@@ -11,15 +12,8 @@ class ItemController {
 
     async delete(req, res) {
         try {
-            return res.status(200).json({message: "Item deleted", item})
-        } catch (e) {
-            return res.status(400).json({message: e.message})
-        }
-    }
-
-    async update(req, res) {
-        try {
-            return res.status(200).json(updatedItem)
+            const deletedComment = await commentService.delete(req, res)
+            return res.status(200).json({message: "Comment deleted", deletedComment})
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
@@ -27,7 +21,8 @@ class ItemController {
 
     async getAll(req, res) {
         try {
-            return res.status(200).json(items)
+            const comments = await commentService.getAll(req, res)
+            return res.status(200).json(comments)
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
