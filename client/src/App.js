@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 import Home from "./containers/HomePage/index";
+import Footer from "./components/Common/Footer";
 
 function App() {
   const theme = createTheme({
@@ -24,6 +24,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
+      <Footer />
     </ThemeProvider>
   );
 }

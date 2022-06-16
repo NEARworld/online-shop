@@ -140,16 +140,23 @@ export default function NavigationBar() {
           >
             MUI
           </Typography>
-          <Search>
+          <Search
+            sx={{
+              flexGrow: 1,
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              sx={{
+                width: "100%",
+              }}
             />
           </Search>
-          <Box sx={{ flexGrow: 1 }} />
+          {/* <Box sx={{ flexGrow: 1 }} /> */}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
