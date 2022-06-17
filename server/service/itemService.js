@@ -14,7 +14,7 @@ class ItemService {
         const typeExists = await Type.findOne({title: type})
 
         if(!typeExists) {
-            throw new Error(`Type ${type} already exists`);
+            throw new Error(`Type ${type} doesn't exists`);
         }
 
         const createdItem = await Item.create({name, imgUrl, description, quantity, price, type: typeExists})

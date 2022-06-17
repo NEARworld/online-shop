@@ -4,7 +4,7 @@ class ItemController {
     async create(req, res) {
         try {
             const comment = await commentService.create(req, res);
-            return res.status(200).json({message: "Item created", comment})
+            return res.status(200).json({message: "Comment created", comment})
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
