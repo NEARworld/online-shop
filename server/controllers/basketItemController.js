@@ -18,6 +18,15 @@ class BasketItemController {
             return res.status(400).json({message: e.message})
         }
     }
+
+    async getAllItems(req, res) {
+        try {
+            const basket = await basketItemService.getAll(req, res)
+            return res.status(200).json(basket.items) // return only array with basket items
+        } catch (e) {
+            return res.status(400).json({message: e.message})
+        }
+    }
 }
 
 module.exports = new BasketItemController();

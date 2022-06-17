@@ -6,7 +6,7 @@ const Item = new Schema({
     description: {type: String, required: true},
     quantity: {type: Number, default: 1},
     views: {type: Number, default: 0},
-    likes: {type: Number, default: 0},
+    likes: {type: Array},
     timesBought: {type: Number, default: 0},
     price: {type: Number, required: true},
     type: {type: Schema.Types.ObjectId, ref: "Type"},

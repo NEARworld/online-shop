@@ -4,5 +4,6 @@ const basketItemRouter = require("express").Router();
 
 basketItemRouter.post("/create/:id", basketItemController.addItemToBasket); // item id, not basketItem id
 basketItemRouter.delete("/delete/:id", basketItemController.removeItemFromBasket); // item id, not basketItem id
+basketItemRouter.get("/getall", basketItemController.getAllItems); // item id, not basketItem id
 
 module.exports = basketItemRouter;

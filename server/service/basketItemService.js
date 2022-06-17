@@ -22,8 +22,8 @@ class BasketItemService {
         
         let total = quantity * itemInDB.price
         
-        const basketItem = await BasketItem.create({quantity, item: itemInDB, totalPrice: total})
-        console.log(basketItem)
+        const basketItem = await BasketItem.create({quantity, item: itemInDB, totalPrice: total}) // WARN! it adds item even if it does exist in db
+
         const basket = await Basket.findOneAndUpdate({user}, {$push: {items: basketItem, updated: Date.now()}}, {new: true}).populate("items")
 
         return basket
@@ -52,12 +52,19 @@ class BasketItemService {
         return basket
     }
     
-    async update(req, res) {
-       
-    }
 
-    async getAll() {
-       
+    async getAll(req, res) {
+        const {userId} = req.body
+
+        const user = await User.findById({_id: userId})
+
+        if (!user) {
+            throw new Error(`User with id: ${userId} not found`)
+        }
+        
+        const basket = await Basket.findOne({user})
+        
+        return basket
     }
 }
 
