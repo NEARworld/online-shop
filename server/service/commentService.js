@@ -5,7 +5,8 @@ const User = require("../models/User");
 class CommentService {
     async create(req, res) {
        const itemId = req.params.id
-       const {userId, content} = req.body
+       const userId = req.user.id
+       const {content} = req.body
 
        const itemExists = await Item.findById({_id: itemId})
        if(!itemExists) {
@@ -14,7 +15,7 @@ class CommentService {
 
        const user = await User.findById({_id: userId})
 
-       const comment = await Comment.create({user, itemExists, content})
+       const comment = await Comment.create({userId: user, itemId: itemExists, content})
 
        await Item.findByIdAndUpdate({_id: itemId}, {$push: {comments: comment}}, {new: true})
 
@@ -24,6 +25,7 @@ class CommentService {
     async delete(req, res) { // need to check user first
         const itemId = req.params.id
         const {commentId} = req.body
+        const userId = req.user.id
 
         const itemExists = await Item.findById({_id: itemId})
 
@@ -32,6 +34,10 @@ class CommentService {
         }
 
         const comment = await Comment.findOne({_id: commentId})
+
+        if(!userId === comment.userId) {
+            throw new Error("You are trying to delete not your own comment")
+        }
 
         await Item.findByIdAndUpdate({_id: itemId}, {$pull: {comments: commentId}}, {new: true})
 

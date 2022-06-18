@@ -5,20 +5,14 @@ const jwt = require('jsonwebtoken');
 class LikeService {
     async like(req, res) {
        const itemId = req.params.id
-       const {userId} = req.body
-
-       const user = await User.findById({_id: userId})
-
-       if(!user) {
-        throw new Error(`User with id: ${userId} not found`)
-       }
+       const userId = req.user.id
 
        const item = await Item.findById({_id: itemId})
 
-       const foundUser = item.likes.find((item) => item === user.id);
+       const foundUser = item.likes.find((item) => item === userId);
 
        if (!foundUser) {
-        item.likes.push(user.id);
+        item.likes.push(userId);
         await item.save();
         return item.likes.length;
         } else {
@@ -28,22 +22,14 @@ class LikeService {
     
     async dislike(req, res) { 
         const itemId = req.params.id
-        const {userId} = req.body
- 
-        const user = await User.findById({_id: userId})
- 
-        if(!user) {
-         throw new Error(`User with id: ${userId} not found`)
-        }
- 
+        const userId = req.user.id
+
         const item = await Item.findById({_id: itemId})
  
-        const foundUser = item.likes.find((item) => item === user.id);
- 
-        console.log(foundUser)
+        const foundUser = item.likes.find((item) => item === userId);
 
         if (foundUser) {
-         item.likes.splice(item.likes.indexOf(user.id), 1);
+         item.likes.splice(item.likes.indexOf(userId), 1);
          await item.save();
          return item.likes.length;
          } else {

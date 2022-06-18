@@ -4,7 +4,6 @@ class TypeController {
     async create(req, res) {
         try {
             const type = await typeService.create(req, res);
-            console.log("LOGS",type)
             return res.status(200).json(`Type ${type.title} successfully created`)
         } catch (e) {
             return res.status(400).json({message: e.message})

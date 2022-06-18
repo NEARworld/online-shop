@@ -6,7 +6,8 @@ const Item = require("../models/Item");
 class BasketItemService {
     async add(req, res) {
         const itemId = req.params.id
-        const {userId, quantity} = req.body
+        const userId = req.user.id
+        const {quantity} = req.body
 
         const user = await User.findById({_id: userId})
 
@@ -31,7 +32,7 @@ class BasketItemService {
     
     async delete(req, res) {
         const itemId = req.params.id
-        const {userId} = req.body
+        const userId = req.user.id
 
         const user = await User.findById({_id: userId})
 
@@ -49,12 +50,14 @@ class BasketItemService {
         
         const basket = await Basket.findOneAndUpdate({user}, {$pull: {items: basketItem._id, updated: Date.now()}}, {new: true}).populate("items")
         
+        await BasketItem.findOneAndDelete({item: itemInDB}) // delete basket Item
+        
         return basket
     }
     
 
     async getAll(req, res) {
-        const {userId} = req.body
+        const userId = req.user.id
 
         const user = await User.findById({_id: userId})
 
