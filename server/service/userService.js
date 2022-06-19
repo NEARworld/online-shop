@@ -35,7 +35,7 @@ class UserService {
         
         const user = await User.create({email, password: hashedPassword, firstName, lastName, verificationLink, roles: [userRole.value]});
         
-        const basket = userRole.value === "USER" ? await Basket.create({user}) : await AdminDashboard.create({user}) 
+        const basket = userRole.value === "USER" ? await Basket.create({user: user._id}) : await AdminDashboard.create({user}) 
 
         await mailService.sendVerificationLink(email,`${process.env.API_URL}/api/user/verification/${verificationLink}`);
 

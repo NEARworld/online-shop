@@ -8,14 +8,16 @@ const basketItemRouter = require("./basketItemRouter");
 const likeRouter = require("./likeRouter");
 const orderRouter = require("./orderRouter");
 const viewRouter = require("./viewRouter");
+const basketRouter = require("./basketRouter");
 
-router.use("/user", userRouter)
-router.use("/type", typeRouter)
-router.use("/item", itemRouter)
-router.use("/comment", commentRouter)
-router.use("/basketitem", basketItemRouter)
+router.use("/users", userRouter)
+router.use("/types", typeRouter)
+router.use("/items", itemRouter)
+router.use("/comments", commentRouter)
+router.use("/basketitems", basketItemRouter)
+router.use("/baskets", basketRouter)
 router.use("/likes", likeRouter)
-router.use("/order", orderRouter)
-router.use("/view", viewRouter)
+router.use("/orders", orderRouter)
+router.use("/views", viewRouter)
 
 module.exports = router;

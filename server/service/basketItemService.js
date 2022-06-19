@@ -5,67 +5,29 @@ const Item = require("../models/Item");
 
 class BasketItemService {
     async add(req, res) {
-        const itemId = req.params.id
         const userId = req.user.id
-        const {quantity} = req.body
+        const items = req.body.items
 
-        const user = await User.findById({_id: userId})
-
-        if (!user) {
-            throw new Error(`User with id: ${userId} not found`)
-        }
-
-        const itemInDB = await Item.findById({_id: itemId})
- 
-        if(!itemInDB) {
-            throw new Error(`Item with id: ${itemId} does not exists`)
-        }
-        
-        let total = quantity * itemInDB.price
-        
-        const basketItem = await BasketItem.create({quantity, item: itemInDB, totalPrice: total}) // WARN! it adds item even if it does exist in db
-
-        const basket = await Basket.findOneAndUpdate({user}, {$push: {items: basketItem, updated: Date.now()}}, {new: true}).populate("items")
+        const basket = await Basket.findOneAndUpdate({user: userId}, {$push: {items: items}}, {new: true})
 
         return basket
     }
     
     async delete(req, res) {
-        const itemId = req.params.id
+        const itemId = req.params.itemId
         const userId = req.user.id
-
-        const user = await User.findById({_id: userId})
-
-        if (!user) {
-            throw new Error(`User with id: ${userId} not found`)
-        }
-
-        const itemInDB = await Item.findById({_id: itemId})
-
-        if(!itemInDB) {
-            throw new Error(`Item with id: ${itemId} does not exists`)
-        }
-
-        const basketItem = await BasketItem.findOne({item: itemInDB})
+        const basketId = req.params.basketId
         
-        const basket = await Basket.findOneAndUpdate({user}, {$pull: {items: basketItem._id, updated: Date.now()}}, {new: true}).populate("items")
-        
-        await BasketItem.findOneAndDelete({item: itemInDB}) // delete basket Item
-        
+        const basket = await Basket.findOneAndUpdate({_id: basketId, user: userId}, {$pull: {items: itemId}}, {new: true})
+
         return basket
     }
     
 
     async getAll(req, res) {
         const userId = req.user.id
-
-        const user = await User.findById({_id: userId})
-
-        if (!user) {
-            throw new Error(`User with id: ${userId} not found`)
-        }
         
-        const basket = await Basket.findOne({user})
+        const basket = await Basket.findOne({user: userId})
         
         return basket
     }

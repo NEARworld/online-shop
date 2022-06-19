@@ -15,15 +15,14 @@ class TypeService {
     }
     
     async delete(req, res) {
-        const {title} = req.body
+        const typeId = req.params.typeId
         
-        const typeExists = await Type.findOne({title})
+        const type = await Type.findOneAndDelete({_id: typeId})
         
-       if (!typeExists) {
-            throw new Error(`You are trying to delete type ${title} that does not exists`)
+       if (!type) {
+            throw new Error(`You are trying to delete type ${typeId} that does not exists`)
        }
 
-       const type = await Type.deleteOne({title: title})
        return type
     }
 

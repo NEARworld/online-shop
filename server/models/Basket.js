@@ -2,9 +2,7 @@ const {Schema, model} = require("mongoose");
 
 const Basket = new Schema({
     user: {type: Schema.Types.ObjectId, ref: "User"},
-    items: [{type: Schema.Types.ObjectId, ref: "BasketItem"}],
-    created: {type: Date, default: Date.now},
-    updated: {type: Date}
+    items: [{itemId: {type: Schema.Types.ObjectId, ref: "Item"}, quantity: {type: Number, default: 1}}],
 })
 
 module.exports = model("Basket", Basket);

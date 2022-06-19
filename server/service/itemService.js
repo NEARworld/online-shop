@@ -25,27 +25,25 @@ class ItemService {
     }
     
     async delete(req, res) {
-        const _id = req.params.id
+        const itemId = req.params.itemId
         const {type} = req.body
 
-        const itemExists = await Item.findById({_id})
+        const item = await Item.findByIdAndDelete({_id: itemId})
 
-        if(!itemExists) {
-            throw new Error(`Item with id: ${_id} not found`)
+        if(!item) {
+            throw new Error(`Item with id: ${itemId} not found`)
         }
 
-        await Type.findOneAndUpdate({title: type}, {$pull: {items: _id}}, {new: true})
-
-        const item = await Item.findByIdAndDelete({_id})
+        await Type.findOneAndUpdate({title: type}, {$pull: {items: itemId}}, {new: true})
 
         return item
     }
     
     async update(req, res) {
-        const _id = req.params.id
+        const itemId = req.params.itemId
         const {name, imgUrl, description, quantity, price} = req.body
 
-        const item = await Item.findByIdAndUpdate({_id}, {name, imgUrl, description, quantity, price, updated: Date.now()})
+        const item = await Item.findByIdAndUpdate({_id: itemId}, {name, imgUrl, description, quantity, price, updated: Date.now()})
 
         return item
     }

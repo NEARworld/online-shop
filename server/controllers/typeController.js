@@ -4,7 +4,7 @@ class TypeController {
     async create(req, res) {
         try {
             const type = await typeService.create(req, res);
-            return res.status(200).json(`Type ${type.title} successfully created`)
+            return res.status(200).json(type)
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
@@ -13,7 +13,7 @@ class TypeController {
     async delete(req, res) {
         try {
             const type = await typeService.delete(req, res);
-            return res.status(200).json(type)
+            return res.status(200).json("Type deleted",type)
         } catch (e) {
             return res.status(400).json({message: e.message})
         }
