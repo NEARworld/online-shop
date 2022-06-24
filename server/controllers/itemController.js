@@ -28,9 +28,18 @@ class ItemController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const item = await itemService.getOne(req, res);
+            return res.status(200).json(item)
+        } catch (e) {
+            return res.status(400).json({message: e.message})
+        }
+    }
+
     async getAll(req, res) {
         try {
-            const items = await itemService.getAll();
+            const items = await itemService.getAll(req, res);
             return res.status(200).json(items)
         } catch (e) {
             return res.status(400).json({message: e.message})

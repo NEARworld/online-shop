@@ -13,7 +13,7 @@ class TypeController {
     async delete(req, res) {
         try {
             const type = await typeService.delete(req, res);
-            return res.status(200).json("Type deleted",type)
+            return res.status(200).json(type)
         } catch (e) {
             return res.status(400).json({message: e.message})
         }

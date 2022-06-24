@@ -4,7 +4,6 @@ const userRouter = require("./userRouter");
 const typeRouter = require("./typeRouter");
 const itemRouter = require("./itemRouter");
 const commentRouter = require("./commentRouter");
-const basketItemRouter = require("./basketItemRouter");
 const likeRouter = require("./likeRouter");
 const orderRouter = require("./orderRouter");
 const viewRouter = require("./viewRouter");
@@ -14,7 +13,6 @@ router.use("/users", userRouter)
 router.use("/types", typeRouter)
 router.use("/items", itemRouter)
 router.use("/comments", commentRouter)
-router.use("/basketitems", basketItemRouter)
 router.use("/baskets", basketRouter)
 router.use("/likes", likeRouter)
 router.use("/orders", orderRouter)

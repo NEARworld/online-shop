@@ -26,6 +26,18 @@ class TypeService {
        return type
     }
 
+    async getOne(req, res) {
+        const typeName = req.params.typeName
+
+        const types = await Type.find({title: typeName})
+        
+        if(!types) {
+            throw new Error("Ooops... can't find any types in database")
+        }
+
+        return types
+    }
+
     async getAll() {
         const types = await Type.find()
         

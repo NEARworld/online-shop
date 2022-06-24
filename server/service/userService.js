@@ -8,7 +8,6 @@ const bcrypt = require("bcrypt");
 const uuid = require("uuid");
 const ApiError = require("../exceptions/apiError");
 const Basket = require("../models/Basket");
-const AdminDashboard = require("../models/AdminDashboard");
 
 class UserService {
     async registration(req, res) {
@@ -35,15 +34,17 @@ class UserService {
         
         const user = await User.create({email, password: hashedPassword, firstName, lastName, verificationLink, roles: [userRole.value]});
         
-        const basket = userRole.value === "USER" ? await Basket.create({user: user._id}) : await AdminDashboard.create({user}) 
-
-        await mailService.sendVerificationLink(email,`${process.env.API_URL}/api/user/verification/${verificationLink}`);
+        if (userRole.value === "USER") {
+            await Basket.create({user: user._id})
+        }
+       
+        await mailService.sendVerificationLink(email,`${process.env.API_URL}/api/users/verification/${verificationLink}`);
 
         const userDto = new UserDto(user); // {id, email, roles, isActivated} = payload
         const tokens = tokenService.generateTokens({...userDto}) // payload object
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-        return { ...tokens, user: userDto, basket}
+        return { ...tokens, user: userDto}
     }
 
     async verification(verificationLink) {

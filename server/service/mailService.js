@@ -18,12 +18,13 @@ class MailService {
             await this.transporter.sendMail({
                 from: process.env.SMTP_USER,
                 to,
-                subject: `Account verification for ${process.env.API_URL}`,
+                subject: `Account verification for ${to}`,
                 text: "",
                 html:
                     `
                     <div>
-                        <h1>Click the link to verify and activate your account</h1>
+                        <h1>Wellcome to Mantra thirty seven!</h1>
+                        <h2>Click the link below to verify your account</h2>
                         <a href="${link}">${link}</a>
                     </div>
                     `

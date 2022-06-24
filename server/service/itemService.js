@@ -3,7 +3,7 @@ const Type = require("../models/Type");
 
 class ItemService {
     async create(req, res) {
-        const {name, imgUrl, description, quantity, price, type} = req.body
+        const {name, img, description, price, type, inStock, size, color} = req.body
 
         const itemExists = await Item.findOne({name})
 
@@ -17,7 +17,7 @@ class ItemService {
             throw new Error(`Type ${type} doesn't exists`);
         }
 
-        const createdItem = await Item.create({name, imgUrl, description, quantity, price, type: typeExists})
+        const createdItem = await Item.create({name, img, description, price, type: typeExists, inStock, size, color})
 
         await Type.findOneAndUpdate({title: type}, { $push: {items: createdItem}}, {new: true})
 
@@ -41,15 +41,34 @@ class ItemService {
     
     async update(req, res) {
         const itemId = req.params.itemId
-        const {name, imgUrl, description, quantity, price} = req.body
+        const {name, img, description, price, type, inStock, size, color} = req.body
 
-        const item = await Item.findByIdAndUpdate({_id: itemId}, {name, imgUrl, description, quantity, price, updated: Date.now()})
+        const item = await Item.findByIdAndUpdate({_id: itemId}, {name, img, description, price, type, inStock, size, color, updated: Date.now()})
 
         return item
     }
 
-    async getAll() {
-        const items = await Item.find();
+    async getOne(req, res) {
+        const itemId = req.params.itemId 
+
+        const item = await Item.findById({_id: itemId})
+
+        return item
+    }
+
+    async getAll(req, res) {
+        const type = req.query.type
+
+        let items
+
+        if(type) {
+            const foundType = await Type.findOne({title: type})
+            items = await Item.find({
+                type: foundType
+            });
+        } else {
+            items = await Item.find();
+        }
 
         return items
     }
