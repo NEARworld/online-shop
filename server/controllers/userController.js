@@ -22,6 +22,15 @@ class UserController {
             next(e);
         }
     }
+
+    async delete(req, res, next) {
+        try {
+            const userData = await userService.delete(req, res);
+            return res.json(userData);
+        } catch (e) {
+            next(e);
+        }
+    }
     
     async logout(req, res, next) {
         try {
@@ -60,7 +69,16 @@ class UserController {
             const users = await userService.getUsers();
             return res.json(users);
         } catch (e) {
+            next(e);
+        }
+    }
 
+    async getOneUser(req, res, next) {
+        try {
+            const user = await userService.getOneUser(req, res);
+            return res.json(user);
+        } catch (e) {
+            next(e);
         }
     }
 }

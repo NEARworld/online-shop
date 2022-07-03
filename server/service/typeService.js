@@ -1,8 +1,9 @@
 const Type = require("../models/Type");
+const Item = require("../models/Item");
 
 class TypeService {
     async create(req, res) {
-        const {title} = req.body
+        const {title, img} = req.body
         
         const typeExists = await Type.findOne({title})
         
@@ -10,12 +11,14 @@ class TypeService {
             throw new Error(`Type ${title} aslready exists`)
         }
         
-        const type = await Type.create({title})
+        const type = await Type.create({title, img})
         return type
     }
     
     async delete(req, res) {
         const typeId = req.params.typeId
+
+        await Item.deleteMany({type: typeId})
         
         const type = await Type.findOneAndDelete({_id: typeId})
         
@@ -27,9 +30,9 @@ class TypeService {
     }
 
     async getOne(req, res) {
-        const typeName = req.params.typeName
+        const typeId = req.params.typeId
 
-        const types = await Type.find({title: typeName})
+        const types = await Type.find({_id: typeId})
         
         if(!types) {
             throw new Error("Ooops... can't find any types in database")

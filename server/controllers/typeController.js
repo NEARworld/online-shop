@@ -19,6 +19,15 @@ class TypeController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const type = await typeService.getOne(req, res);
+            return res.status(200).json(type)
+        } catch (e) {
+            return res.status(400).json({message: e.message})
+        }
+    }
+
     async getAll(req, res) {
         try {
             const types = await typeService.getAll(req, res)

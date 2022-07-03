@@ -11,7 +11,6 @@ const Item = new Schema({
     likes: {type: Array},
     views: {type: Number, default: 0},
     type: {type: Schema.Types.ObjectId, ref: "Type"},
-    comments: [{type: Schema.Types.ObjectId, ref: "Comment"}],
     created: {type: Date, default: Date.now},
     updated: {type: Date}
 })

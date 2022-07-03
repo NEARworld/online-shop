@@ -20,7 +20,7 @@ class UserService {
             return ({message: "Password or email is invalid:", errors: errors.array()});
         }
 
-        const {email, password, isAdmin, firstName, lastName} = req.body
+        const {email, password, isAdmin, firstName, lastName, img} = req.body
 
         const candidate = await User.findOne({email});
         if (candidate) {
@@ -32,7 +32,7 @@ class UserService {
 
         const userRole =  await Role.findOne({value: isAdmin === "true" ? "ADMIN" : "USER"}) 
         
-        const user = await User.create({email, password: hashedPassword, firstName, lastName, verificationLink, roles: [userRole.value]});
+        const user = await User.create({email, password: hashedPassword, firstName, lastName, verificationLink, img, roles: [userRole.value]});
         
         if (userRole.value === "USER") {
             await Basket.create({user: user._id})
@@ -71,6 +71,19 @@ class UserService {
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return { ...tokens, user: userDto}
     }
+    async delete(req, res) {
+        const userId = req.params.userId
+        const user = await User.findOneAndRemove({_id: userId})
+
+        if(user) {
+            await Basket.findOneAndRemove({user: user._id})
+        }
+
+        if(!user) {
+            throw ApiError.BadRequest(`User with ID: ${userId} is not found`);
+        }
+        return user
+    }
 
     async logout(refreshToken) {
         const token = await tokenService.removeToken(refreshToken);
@@ -92,6 +105,12 @@ class UserService {
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return { ...tokens, user: userDto}
+    }
+
+    async getOneUser(req, res) {
+        const userId = req.params.userId
+        const user = await User.find({_id: userId});
+        return user;
     }
 
     async getUsers() {
